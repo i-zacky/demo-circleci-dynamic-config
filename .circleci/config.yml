@@ -34,7 +34,7 @@ workflows:
   version: 2
   setup-ci-build:
     jobs:
-      - setup-docker-build
+      - setup-ci-build
 
   setup-docker-build:
     jobs:
