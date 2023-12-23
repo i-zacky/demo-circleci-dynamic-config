@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+
+# Gradle
+.gradle/
+build/
+
+# runtime version manager
+.tool-versions

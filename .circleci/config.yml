@@ -1,0 +1,28 @@
+version: 2.1
+
+executors:
+  java:
+    docker:
+      - image: cimg/openjdk:21.0
+
+jobs:
+  docker-build:
+    executor: java
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build Docker Image
+          working_directory: java
+          command: ./gradlew :app:dockerBuild
+
+workflows:
+  version: 2
+  docker-build:
+    jobs:
+      - docker-build:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
