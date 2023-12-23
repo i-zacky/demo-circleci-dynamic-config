@@ -9,3 +9,12 @@ jobs:
           name: Build Application
           working_directory: java
           command: ./gradlew :app:build
+
+workflows:
+  version: 2
+  ci-build:
+    jobs:
+      - build-java:
+          filters:
+            tags:
+              ignore: /.*/
