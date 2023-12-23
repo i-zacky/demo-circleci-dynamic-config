@@ -1,0 +1,23 @@
+version: 2.1
+
+jobs:
+  build-java:
+    executor: java
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build Docker Image
+          working_directory: java
+          command: ./gradlew :app:dockerBuild
+
+workflows:
+  version: 2
+  docker-build:
+    jobs:
+      - build-java:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/

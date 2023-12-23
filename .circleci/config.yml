@@ -1,26 +1,45 @@
 version: 2.1
 
-executors:
-  java:
-    docker:
-      - image: cimg/openjdk:21.0
+setup: true
+
+orbs:
+  pack: buildpacks/pack@0.2.4
+  continuation: circleci/continuation@1.0.0
 
 jobs:
-  docker-build:
-    executor: java
+  setup-ci-build:
+    docker:
+      - image: cimg/base:stable
     steps:
       - checkout
-      - setup_remote_docker
       - run:
-          name: Build Docker Image
-          working_directory: java
-          command: ./gradlew :app:dockerBuild
+          name: Setup CircleCI yml
+          command: |
+            yq eval-all '. as $item ireduce ({}; . * $item)' .circleci/executors.yml .circleci/ci-build.yml > merged.yml
+      - continuation/continue:
+          configuration_path: merged.yml
+
+  setup-docker-build:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: Setup CircleCI yml
+          command: |
+            yq eval-all '. as $item ireduce ({}; . * $item)' .circleci/executors.yml .circleci/docker-build.yml > merged.yml
+      - continuation/continue:
+          configuration_path: merged.yml
 
 workflows:
   version: 2
-  docker-build:
+  setup-ci-build:
     jobs:
-      - docker-build:
+      - setup-docker-build
+
+  setup-docker-build:
+    jobs:
+      - setup-docker-build:
           filters:
             tags:
               only: /^v.*/

@@ -1,0 +1,11 @@
+version: 2.1
+
+jobs:
+  build-java:
+    executor: java
+    steps:
+      - checkout
+      - run:
+          name: Build Application
+          working_directory: java
+          command: ./gradlew :app:build

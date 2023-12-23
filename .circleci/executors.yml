@@ -1,0 +1,4 @@
+executors:
+  java:
+    docker:
+      - image: cimg/openjdk:21.0
