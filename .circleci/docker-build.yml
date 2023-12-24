@@ -18,11 +18,11 @@ jobs:
       - setup_remote_docker
       - run:
           name: Install Dependencies
-          working-directory: node
+          working_directory: node
           command: npm install
       - run:
           name: Build Application
-          working-directory: node
+          working_directory: node
           command: npm run build
       - pack/build:
           name: Build Docker Image
