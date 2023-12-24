@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  pack: buildpacks/pack@0.2.4
+
 jobs:
   build-java:
     executor: java
