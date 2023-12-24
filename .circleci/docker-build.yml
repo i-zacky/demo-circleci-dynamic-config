@@ -27,7 +27,7 @@ jobs:
           name: Build Application
           working_directory: node
           command: npm run build
-      - pack/build:
+      - pack/pack-build:
           name: Build Docker Image
           working-directory: node
           builder: paketobuildpacks/builder-jammy-base
