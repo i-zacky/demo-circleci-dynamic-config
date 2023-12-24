@@ -3,6 +3,7 @@ version: 2.1
 setup: true
 
 orbs:
+  pack: buildpacks/pack@0.2.4
   continuation: circleci/continuation@1.0.0
 
 jobs:

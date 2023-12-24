@@ -2,3 +2,7 @@ executors:
   java:
     docker:
       - image: cimg/openjdk:21.0
+
+  node:
+    docker:
+      - image: cimg/node:lts

@@ -11,11 +11,38 @@ jobs:
           working_directory: java
           command: ./gradlew :app:dockerBuild
 
+  build-node:
+    executor: node
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Install Dependencies
+          working-directory: node
+          command: npm install
+      - run:
+          name: Build Application
+          working-directory: node
+          command: npm run build
+      - pack/build:
+          name: Build Docker Image
+          working-directory: node
+          builder: paketobuildpacks/builder-jammy-base
+          buildpacks: paketo-buildpacks/nginx
+          image-name: node
+          env-vars: BP_WEB_SERVER=nginx
+
 workflows:
   version: 2
   docker-build:
     jobs:
       - build-java:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - build-node:
           filters:
             tags:
               only: /^v.*/
