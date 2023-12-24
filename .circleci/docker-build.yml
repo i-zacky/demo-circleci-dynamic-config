@@ -19,6 +19,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - pack/install-pack
       - run:
           name: Install Dependencies
           working_directory: node
@@ -27,13 +28,14 @@ jobs:
           name: Build Application
           working_directory: node
           command: npm run build
-      - pack/pack-build:
+      - run:
           name: Build Docker Image
           working_directory: node
-          builder: paketobuildpacks/builder-jammy-base
-          buildpacks: paketo-buildpacks/nginx
-          image-name: node
-          env-vars: BP_WEB_SERVER=nginx
+          command: |
+            pack build node \
+              --builder paketobuildpacks/builder-jammy-base \
+              --buildpack paketo-buildpacks/nginx \
+              --env BP_WEB_SERVER=nginx
 
 workflows:
   version: 2
